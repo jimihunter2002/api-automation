@@ -1,0 +1,25 @@
+# @name tokenRequest
+
+POST {{baseUrl}}/authenticate
+Content-Type: application/json
+
+{
+    "firmId": "{{firmId}}",
+    "id": "{{userId}}",
+    "password": "{{password}}"
+
+}
+
+#### Variable Response
+@access_token = {{tokenRequest.response.body.$.data.token}}
+
+
+### Add asset to firm
+POST {{baseUrl}}/asset
+api-token: {{access_token}}
+Content-Type: application/json 
+
+{
+    "firmId": "{{firmId}}",
+    "id": "12345657"
+}

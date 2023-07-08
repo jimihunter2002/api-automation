@@ -1,0 +1,67 @@
+# @name tokenRequest
+
+POST {{baseUrl}}/authenticate
+Content-Type: application/json
+
+{
+    "firmId": "{{firmId}}",
+    "id": "{{userId}}",
+    "password": "{{password}}"
+
+}
+#### Variable Response
+@access_token = {{tokenRequest.response.body.$.data.token}} 
+
+
+### for getting list of nationalities
+GET {{baseUrl}}/static/nationality
+Content-Type: application/json 
+api-token: {{access_token}}
+
+### create a client
+POST {{baseUrl}}/client
+Content-Type: application/json 
+api-token: {{access_token}}
+
+{
+    "firmId": "{{firmId}}",
+    "nodeId": [
+        "0"
+    ],
+    "clientType": "Individual",
+    "title": "Mr",
+    "firstName": "Yusuf",
+    "surname": "Ogunjimi",
+    "gender": "Male",
+    "currency": "GBP",
+    "addressDetail": {
+        "flatNumber": "101",
+        "address1": "Turnpike Lane",
+        "address2": "London",
+        "country": "GB",
+        "postCode": "N17 6DB"
+    },
+    "language": "en",
+    "email": "{{clientEmail}}",
+    "mobile": {
+        "number": "07777000000",
+        "locale": "en-GB",
+        "isMobile": true
+    },
+    "nationality": "IT",
+    "nationalInsuranceNo": "{{clientNiNumber}}",
+    "dateOfBirth": "1982-10-01",
+    "taxDomicile": "GB",
+    "amlStatus": "Approved",
+    "termsAccepted": true
+}
+
+### Retrieve a client with clientId
+GET {{baseUrl}}/client/{{firmId}}/02H9679
+Content-Type: application/json 
+api-token: {{access_token}}
+
+#### List clients faulty with 504 timeout error
+GET {{baseUrl}}/client/{{firmId}}
+Content-Type: application/json 
+api-token: {{access_token}}

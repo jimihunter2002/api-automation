@@ -1,0 +1,44 @@
+# @name tokenRequest
+
+POST {{baseUrl}}/authenticate
+Content-Type: application/json
+
+{
+    "firmId": "{{firmId}}",
+    "id": "{{userId}}",
+    "password": "{{password}}"
+
+}
+
+#### Variable Response
+@access_token = {{tokenRequest.response.body.$.data.token}}
+
+
+#### Retrieve firm users
+GET {{baseUrl}}/user/{{firmId}}
+Content-Type: application/json 
+api-token: {{access_token}}
+
+
+### get node list to obtain nodeId linked to client
+GET {{baseUrl}}/firm/node/list/{{firmId}}
+api-token: {{access_token}}
+Content-Type: application/json 
+
+
+### get full list of assets available to SECCL
+GET {{baseUrl}}/masterinstrument/{{firmId}}?
+api-token: {{access_token}}
+Content-Type: application/json 
+
+### Get historical price list of asset  
+GET {{baseUrl}}/price/{{firmId}}/2851G
+api-token: {{access_token}}
+Content-Type: application/json
+
+
+### List assets available to a firm: optional params idOrName seem mandatory but not stated in doc
+GET {{baseUrl}}/asset/{{firmId}}?idOrName={{idOrName}}&page=1&pageSize=10
+api-token: {{access_token}}
+Content-Type: application/json
+

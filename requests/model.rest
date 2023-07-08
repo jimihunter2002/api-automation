@@ -1,0 +1,76 @@
+# @name tokenRequest
+POST {{baseUrl}}/authenticate
+Content-Type: application/json
+
+{
+    "firmId": "{{firmId}}",
+    "id": "{{userId}}",
+    "password": "{{password}}"
+
+}
+#### Variable Response
+@access_token = {{tokenRequest.response.body.$.data.token}} 
+
+
+### can't create model as there were missing mandatory fields to be included in the payload in the documentation .e.g firm lei, firmCountry
+# @name modelReq
+POST {{baseUrl}}/model
+api-token: {{access_token}}
+Content-Type: application/json
+
+{
+	"firmId": "{{firmId}}",
+	"name": "Modela Yusuft",
+	"vatable": true,
+	"suspendRebalances": false,
+	"aim": "Api testing",
+	"riskRating": 4,
+	"commentary": "model creation again and again",
+    "investmentDecision": {
+        "firmLei": "{{firmLei}}",
+        "firmCountry": "GB",
+        "personId": "AB121212B",
+        "personIdType": "NINO",
+        "personCountry": "GB"
+      },
+	"modelCharge": 0.99,
+	"cashAllocation": 0.446,
+	"productType": [ "PENSION"],
+	"availableToNodeId": ["0"],
+        "allocations": [
+        	{
+                    "assetId": "2851G",
+                    "percentage": 0.1,
+                    "status": "Active",
+                    "assetName": "NATIONAL GRID PLC",
+                    "currency": "GBP"
+                }
+        ]
+}
+
+#### Variable Response
+@modelId = {{modelReq.response.body.$.data.id}} 
+
+
+#### Get the list of models
+GET {{baseUrl}}/model/{{firmId}}
+api-token: {{access_token}}
+Content-Type: application/json
+
+
+#### partial update using modelId: 04F93
+PATCH {{baseUrl}}/model/{{firmId}}/{{modelId}}
+api-token: {{access_token}}
+Content-Type: application/json
+
+
+{
+    "updateId": "64a749d17d16f2e55ad074bb",
+    "allocations": [
+        {
+            "assetId": "26MPM",
+            "percentage": 0.7
+        }
+    ],
+    "cashAllocation": 0.3
+}

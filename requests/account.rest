@@ -1,0 +1,49 @@
+# @name tokenRequest
+
+
+POST {{baseUrl}}/authenticate
+Content-Type: application/json
+
+{
+    "firmId": "{{firmId}}",
+    "id": "{{userId}}",
+    "password": "{{password}}"
+
+}
+#### Variable Response
+@access_token = {{tokenRequest.response.body.$.data.token}} 
+
+
+### create account without tiered
+# @name accountReq
+POST {{baseUrl}}/account
+api-token: {{access_token}}
+Content-Type: application/json
+
+{
+    "firmId": "{{firmId}}",
+    "nodeId": "0",
+    "accountType": "Wrapper",
+    "name": "New trading account",
+    "status": "Active",
+    "adviserCharge": 0.0125,
+    "discretionaryManagementCharge": 0.004,
+    "currency": "GBP",
+    "clientId": "02HG21B",
+    "wrapperDetail": {
+        "wrapperType": "GIA",
+        "discretionary": true,
+        "advised": true,
+        "assetAllocationId": "04F93"
+    }
+}
+
+
+#### Variable response
+@accountId = {{accountReq.response.body.$.data.id}}
+
+
+### Retrieve account
+GET {{baseUrl}}/account/{{firmId}}/{{accountId}}
+api-token: {{access_token}}
+Content-Type: application/json
